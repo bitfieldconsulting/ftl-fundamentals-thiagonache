@@ -8,8 +8,8 @@ import (
 	"strconv"
 )
 
-var divideByZeroMessage = "Cannot divide by zero"
-var negativeNumber = "No negative number allowed"
+const divideByZeroMessage = "Cannot divide by zero"
+const negativeNumber = "No negative number allowed"
 
 // ErrorString is a trivial implementation of error.
 type ErrorString struct {
