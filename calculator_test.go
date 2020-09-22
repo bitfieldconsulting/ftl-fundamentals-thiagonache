@@ -198,3 +198,38 @@ func TestSqrt(t *testing.T) {
 		})
 	}
 }
+
+func TestCalculateString(t *testing.T) {
+	testCases := []struct {
+		name    string
+		want    float64
+		formula string
+	}{
+		{
+			name:    "Multiply no space",
+			want:    4.0,
+			formula: "2*2",
+		},
+		{
+			name:    "Sum with fraction",
+			want:    2.5,
+			formula: "1 + 1.5",
+		},
+		{
+			name:    "Divide with spaces",
+			want:    3,
+			formula: "18   /   6",
+		},
+		{
+			name:    "Substract fraction with no space ",
+			want:    99.9,
+			formula: "100-0.1",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			got := calculator.CalculateString(tC.formula)
+			assertNumbers(tC.want, got, t)
+		})
+	}
+}
