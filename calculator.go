@@ -2,7 +2,10 @@
 package calculator
 
 import (
+	"go/token"
+	"go/types"
 	"math"
+	"strconv"
 )
 
 var divideByZeroMessage = "Cannot divide by zero"
@@ -67,4 +70,27 @@ func Sqrt(a float64) (float64, error) {
 		return 0, &ErrorString{negativeNumber}
 	}
 	return math.Sqrt(a), nil
+}
+
+func convertStringFloat64(input string) float64 {
+	value, err := strconv.ParseFloat(input, 64)
+	if err != nil {
+		panic(err)
+	}
+	return value
+}
+
+func evaluateExpr(input string) string {
+	fs := token.NewFileSet()
+	tr, err := types.Eval(fs, nil, token.NoPos, input)
+	if err != nil {
+		panic(err)
+	}
+	return tr.Value.String()
+}
+
+// CalculateString takes math formula as string and returns the result in float64 format
+func CalculateString(input string) float64 {
+	strValue := evaluateExpr(input)
+	return convertStringFloat64(strValue)
 }
