@@ -47,39 +47,51 @@ func TestAdd(t *testing.T) {
 
 func TestSubtract(t *testing.T) {
 	testCases := []struct {
-		name   string
-		want   float64
-		inputs []float64
+		name  string
+		want  float64
+		n1    float64
+		n2    float64
+		extra []float64
 	}{
 		{
-			name:   "Substract a > b returns positive",
-			inputs: []float64{3, 2},
-			want:   1,
+			name:  "Substract a > b returns positive",
+			n1:    3,
+			n2:    2,
+			extra: nil,
+			want:  1,
 		},
 		{
-			name:   "Substract a < b returns negative",
-			inputs: []float64{3, 5},
-			want:   -2,
+			name:  "Substract a < b returns negative",
+			n1:    3,
+			n2:    5,
+			extra: nil,
+			want:  -2,
 		},
 		{
-			name:   "Ensure decimals",
-			inputs: []float64{6, 2.225},
-			want:   3.77500,
+			name:  "Ensure decimals",
+			n1:    6,
+			n2:    2.225,
+			extra: nil,
+			want:  3.77500,
 		},
 		{
-			name:   "Substract a and b negatives which returns a positive",
-			inputs: []float64{-3, -5},
-			want:   2,
+			name:  "Substract a and b negatives which returns a positive",
+			n1:    -3,
+			n2:    -5,
+			extra: nil,
+			want:  2,
 		},
 		{
-			name:   "Substract five numbers",
-			inputs: []float64{10, 5, 4},
-			want:   1,
+			name:  "Substract five numbers",
+			n1:    20,
+			n2:    5,
+			extra: []float64{4, 3, 7},
+			want:  1,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got := calculator.Subtract(tC.inputs)
+			got := calculator.Subtract(tC.n1, tC.n2, tC.extra)
 			assertNumbers(tC.want, got, t)
 		})
 	}
@@ -87,39 +99,58 @@ func TestSubtract(t *testing.T) {
 
 func TestMultiply(t *testing.T) {
 	testCases := []struct {
-		name   string
-		want   float64
-		inputs []float64
+		name  string
+		want  float64
+		n1    float64
+		n2    float64
+		extra []float64
 	}{
 		{
-			name:   "Multiply two positive numbers returns positive",
-			inputs: []float64{3, 2},
-			want:   6,
+			name:  "Multiply two positive numbers returns positive",
+			n1:    3,
+			n2:    2,
+			extra: nil,
+			want:  6,
 		},
 		{
-			name:   "Multiply positive and negative should return negative",
-			inputs: []float64{3, -2},
-			want:   -6,
+			name:  "Multiply positive and negative should return negative",
+			n1:    3,
+			n2:    -2,
+			extra: nil,
+			want:  -6,
 		},
 		{
-			name:   "Multiply two negative numbers returns positive",
-			inputs: []float64{-3, -2},
-			want:   6,
+			name:  "Multiply two negative numbers returns positive",
+			n1:    -3,
+			n2:    -2,
+			extra: nil,
+			want:  6,
 		},
 		{
-			name:   "Multiply fractions return fraction",
-			inputs: []float64{3.2, 2.501},
-			want:   8.0032,
+			name:  "Multiply fractions return fraction",
+			n1:    3.2,
+			n2:    2.501,
+			extra: nil,
+			want:  8.0032,
 		},
 		{
-			name:   "Multiply by zero return zero",
-			inputs: []float64{1943, 0},
-			want:   0,
+			name:  "Multiply by zero return zero",
+			n1:    1943,
+			n2:    0,
+			extra: nil,
+			want:  0,
+		},
+		{
+			name:  "Multiply five numbers",
+			n1:    2,
+			n2:    2,
+			extra: []float64{5, 3, 2},
+			want:  120,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got := calculator.Multiply(tC.inputs)
+			got := calculator.Multiply(tC.n1, tC.n2, tC.extra)
 			assertNumbers(tC.want, got, t)
 		})
 	}
@@ -131,38 +162,48 @@ func TestDivide(t *testing.T) {
 		name        string
 		errExpected bool
 		want        float64
-		inputs      []float64
+		n1          float64
+		n2          float64
+		extra       []float64
 	}{
 		{
 			name:        "Divide two positive integers",
 			errExpected: false,
 			want:        2,
-			inputs:      []float64{6, 3},
+			n1:          6,
+			n2:          3,
+			extra:       nil,
 		},
 		{
 			name:        "Divide by zero",
 			errExpected: true,
 			want:        0,
-			inputs:      []float64{6, 0},
+			n1:          6,
+			n2:          0,
+			extra:       nil,
 		},
 		{
 			name:        "Divide two negative integers",
 			errExpected: true,
 			want:        -6,
-			inputs:      []float64{-2, -3},
+			n1:          -2,
+			n2:          -3,
+			extra:       nil,
 		},
 		{
 			name:        "Divide five numbers",
 			errExpected: false,
 			want:        1,
-			inputs:      []float64{60, 2, 3, 5, 2},
+			n1:          60,
+			n2:          2,
+			extra:       []float64{3, 5, 2},
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got, err := calculator.Divide(tC.inputs)
+			got, err := calculator.Divide(tC.n1, tC.n2, tC.extra)
 			if err != nil && tC.errExpected == false {
-				t.Fatalf("Cannot divide inputs %.2f: %s", tC.inputs, err)
+				t.Fatalf("Cannot divide inputs %.2f %.2f %.2f: %s", tC.n1, tC.n2, tC.extra, err)
 			}
 			assertNumbersErrHandling(tC.want, got, tC.errExpected, t)
 		})
