@@ -63,11 +63,6 @@ func Sqrt(a float64) (float64, error) {
 	return math.Sqrt(a), nil
 }
 
-func convertStringFloat64(input string) (float64, error) {
-	value, err := strconv.ParseFloat(input, 64)
-	return value, err
-}
-
 func evaluateExpr(input string) (string, error) {
 	fs := token.NewFileSet()
 	tr, err := types.Eval(fs, nil, token.NoPos, input)
@@ -83,7 +78,7 @@ func CalculateString(input string) float64 {
 	if err != nil {
 		fmt.Printf("Cannot evaluate expression %s: %e", input, err)
 	}
-	evaluated, err := convertStringFloat64(strValue)
+	evaluated, err := strconv.ParseFloat(strValue, 64)
 	if err != nil {
 		fmt.Printf("Cannot convert %.2f from string to float64: %e", evaluated, err)
 	}
