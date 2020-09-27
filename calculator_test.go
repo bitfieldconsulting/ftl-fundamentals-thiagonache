@@ -184,7 +184,7 @@ func TestDivide(t *testing.T) {
 		},
 		{
 			name:        "Divide two negative integers",
-			errExpected: true,
+			errExpected: false,
 			want:        -6,
 			n1:          -2,
 			n2:          -3,
