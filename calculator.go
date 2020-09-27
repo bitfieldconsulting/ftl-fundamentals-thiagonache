@@ -85,7 +85,7 @@ func CalculateString(input string) float64 {
 	}
 	evaluated, err := convertStringFloat64(strValue)
 	if err != nil {
-		fmt.Printf("Cannot convert %.2f from string to float64: %e", evaluated, err)
+		fmt.Printf("Cannot convert %q from string to float64: %e", strValue, err)
 	}
 	return evaluated
 }
