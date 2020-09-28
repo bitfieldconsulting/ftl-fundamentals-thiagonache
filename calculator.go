@@ -11,45 +11,45 @@ import (
 )
 
 // Add takes two numbers and returns the result of adding them together.
-func Add(n1, n2 float64, extra ...float64) float64 {
-	var total float64 = n1 + n2
-	for i := range extra {
-		total += extra[i]
+func Add(a, b float64, extra ...float64) float64 {
+	var total float64 = a + b
+	for _, n := range extra {
+		total += n
 	}
 	return total
 }
 
 // Subtract takes two numbers and returns the result of subtracting the second
 // from the first.
-func Subtract(n1, n2 float64, extra []float64) float64 {
-	result := n1 - n2
-	for i := range extra {
-		result -= extra[i]
+func Subtract(a, b float64, extra []float64) float64 {
+	result := a - b
+	for _, n := range extra {
+		result -= n
 	}
 	return result
 }
 
 // Multiply takes two numbers and returns the result of multiplication them together.
-func Multiply(n1, n2 float64, extra []float64) float64 {
-	result := n1 * n2
-	for i := range extra {
-		result *= extra[i]
+func Multiply(a, b float64, extra []float64) float64 {
+	result := a * b
+	for _, n := range extra {
+		result *= n
 	}
 	return result
 }
 
 // Divide takes two numbers and returns the result of divion and an error message
-func Divide(n1, n2 float64, extra []float64) (float64, error) {
+func Divide(a, b float64, extra []float64) (float64, error) {
 	var divideByZeroError = "Cannot divide by zero"
-	if n2 == 0 {
+	if b == 0 {
 		return 0, errors.New(divideByZeroError)
 	}
-	result := n1 / n2
-	for i := range extra {
-		if extra[i] == 0 {
+	result := a / b
+	for _, n := range extra {
+		if n == 0 {
 			return 0, errors.New(divideByZeroError)
 		}
-		result /= extra[i]
+		result /= n
 	}
 	return result, nil
 }
@@ -63,24 +63,16 @@ func Sqrt(a float64) (float64, error) {
 	return math.Sqrt(a), nil
 }
 
-func evaluateExpr(input string) (string, error) {
+// CalculateString takes math formula as string and returns the result in float64 format
+func CalculateString(input string) float64 {
 	fs := token.NewFileSet()
 	tr, err := types.Eval(fs, nil, token.NoPos, input)
 	if err != nil {
-		return "", err
-	}
-	return tr.Value.String(), err
-}
-
-// CalculateString takes math formula as string and returns the result in float64 format
-func CalculateString(input string) float64 {
-	strValue, err := evaluateExpr(input)
-	if err != nil {
 		fmt.Printf("Cannot evaluate expression %s: %e", input, err)
 	}
-	evaluated, err := strconv.ParseFloat(strValue, 64)
+	evaluated, err := strconv.ParseFloat(tr.Value.String(), 64)
 	if err != nil {
-		fmt.Printf("Cannot convert %q from string to float64: %e", strValue, err)
+		fmt.Printf("Cannot convert %q from string to float64: %e", tr.Value.String(), err)
 	}
 	return evaluated
 }

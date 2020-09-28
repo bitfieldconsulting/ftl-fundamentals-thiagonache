@@ -6,43 +6,39 @@ import (
 	"testing"
 )
 
-func assertNumbers(want, got float64, t *testing.T) {
-	if want != got {
-		t.Fatalf("want %f, got %f", want, got)
-	}
-}
-
-func assertNumbersErrHandling(want, got float64, errExpected bool, t *testing.T) {
-	if (want != got) && !errExpected {
-		t.Fatalf("want %f, got %f", want, got)
-	}
-}
-
 func TestAdd(t *testing.T) {
-	var totalRandom int = 100
 
 	t.Run("Fixed number addition", func(t *testing.T) {
 		var want float64 = 4
 		got := calculator.Add(2, 2)
-		assertNumbers(want, got, t)
+		if want != got {
+			t.Errorf("want %f, got %f", want, got)
+		}
 	})
 
 	t.Run("Sum four numbers", func(t *testing.T) {
 		var want float64 = 40
 		got := calculator.Add(2, 8, 20, 10)
-		assertNumbers(want, got, t)
+		if want != got {
+			t.Errorf("want %f, got %f", want, got)
+		}
 	})
 
+}
+
+func TestAddRandom(t *testing.T) {
+	var totalRandom int = 100
 	t.Run("Random number addition", func(t *testing.T) {
 		for count := 0; count < totalRandom; count++ {
 			var a float64 = rand.NormFloat64()*1024 + 2
 			var b float64 = rand.NormFloat64()*2048 + 5
 			want := a + b
 			got := calculator.Add(a, b)
-			assertNumbers(want, got, t)
+			if want != got {
+				t.Errorf("want %f, got %f", want, got)
+			}
 		}
 	})
-
 }
 
 func TestSubtract(t *testing.T) {
@@ -92,7 +88,9 @@ func TestSubtract(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			got := calculator.Subtract(tC.n1, tC.n2, tC.extra)
-			assertNumbers(tC.want, got, t)
+			if tC.want != got {
+				t.Errorf("want %f, got %f", tC.want, got)
+			}
 		})
 	}
 }
@@ -151,7 +149,9 @@ func TestMultiply(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			got := calculator.Multiply(tC.n1, tC.n2, tC.extra)
-			assertNumbers(tC.want, got, t)
+			if tC.want != got {
+				t.Errorf("want %f, got %f", tC.want, got)
+			}
 		})
 	}
 }
@@ -205,7 +205,9 @@ func TestDivide(t *testing.T) {
 			if err != nil && tC.errExpected == false {
 				t.Fatalf("Cannot divide inputs %.2f %.2f %.2f: %s", tC.n1, tC.n2, tC.extra, err)
 			}
-			assertNumbersErrHandling(tC.want, got, tC.errExpected, t)
+			if tC.want != got {
+				t.Errorf("Want %f, got %f", tC.want, got)
+			}
 		})
 	}
 }
@@ -235,7 +237,9 @@ func TestSqrt(t *testing.T) {
 			if err != nil && tC.errExpected == false {
 				t.Fatalf("Cannot calculate square root of %f: %s", tC.a, err)
 			}
-			assertNumbersErrHandling(tC.want, got, tC.errExpected, t)
+			if tC.want != got {
+				t.Errorf("want %f, got %f", tC.want, got)
+			}
 		})
 	}
 }
@@ -270,7 +274,9 @@ func TestCalculateString(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			got := calculator.CalculateString(tC.formula)
-			assertNumbers(tC.want, got, t)
+			if tC.want != got {
+				t.Errorf("want %f, got %f", tC.want, got)
+			}
 		})
 	}
 }
