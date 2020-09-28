@@ -7,7 +7,9 @@ import (
 	"go/token"
 	"go/types"
 	"math"
+	"regexp"
 	"strconv"
+	"strings"
 )
 
 // Add takes two numbers and returns the result of adding them together.
@@ -64,15 +66,25 @@ func Sqrt(a float64) (float64, error) {
 }
 
 // CalculateString takes math formula as string and returns the result in float64 format
-func CalculateString(input string) float64 {
-	fs := token.NewFileSet()
-	tr, err := types.Eval(fs, nil, token.NoPos, input)
-	if err != nil {
-		fmt.Printf("Cannot evaluate expression %s: %e", input, err)
+func CalculateString(input string) (float64, error) {
+
+	const regularExpression = `^(\d+)(\.\d+)?(\*|\/|\+|\-)(\d+)(\.\d+)?$`
+	noSpace := strings.Replace(input, " ", "", -1)
+	regex := regexp.MustCompile(regularExpression)
+	match, _ := regexp.Match(regularExpression, []byte(noSpace))
+	if match {
+		parsed := regex.Find([]byte(noSpace))
+		fs := token.NewFileSet()
+		tr, err := types.Eval(fs, nil, token.NoPos, string(parsed))
+		if err != nil {
+			fmt.Printf("Cannot evaluate expression %s: %e", string(parsed), err)
+		}
+		evaluated, err := strconv.ParseFloat(tr.Value.String(), 64)
+		if err != nil {
+			fmt.Printf("Cannot convert %q from string to float64: %e", tr.Value.String(), err)
+		}
+		return evaluated, nil
 	}
-	evaluated, err := strconv.ParseFloat(tr.Value.String(), 64)
-	if err != nil {
-		fmt.Printf("Cannot convert %q from string to float64: %e", tr.Value.String(), err)
-	}
-	return evaluated
+	return -1, errors.New("Invalid expression")
+
 }

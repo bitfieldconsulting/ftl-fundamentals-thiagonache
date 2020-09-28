@@ -246,36 +246,59 @@ func TestSqrt(t *testing.T) {
 
 func TestCalculateString(t *testing.T) {
 	testCases := []struct {
-		name    string
-		want    float64
-		formula string
+		name        string
+		errExpected bool
+		want        float64
+		formula     string
 	}{
 		{
-			name:    "Multiply no space",
-			want:    4.0,
-			formula: "2*2",
+			name:        "Multiply no space",
+			errExpected: false,
+			want:        4.0,
+			formula:     "2*2",
 		},
 		{
-			name:    "Sum with fraction",
-			want:    2.5,
-			formula: "1 + 1.5",
+			name:        "Sum with fraction",
+			errExpected: false,
+			want:        2.5,
+			formula:     "1 + 1.5",
 		},
 		{
-			name:    "Divide with spaces",
-			want:    3,
-			formula: "18   /   6",
+			name:        "Divide with spaces",
+			errExpected: false,
+			want:        3,
+			formula:     "18   /   6",
 		},
 		{
-			name:    "Substract fraction with no space ",
-			want:    99.9,
-			formula: "100-0.1",
+			name:        "Substract fraction with no space ",
+			errExpected: false,
+			want:        99.9,
+			formula:     "100-0.1",
+		},
+		{
+			name:        "Substract fraction with no space ",
+			errExpected: false,
+			want:        99.9,
+			formula:     "100-0.1",
+		},
+		{
+			name:        "Invalid expression",
+			errExpected: true,
+			want:        1,
+			formula:     "1 * 1 * 1",
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got := calculator.CalculateString(tC.formula)
-			if tC.want != got {
-				t.Errorf("want %f, got %f", tC.want, got)
+			got, err := calculator.CalculateString(tC.formula)
+			if err != nil {
+				if tC.errExpected != true {
+					t.Errorf("Could not evaluate expression %s. It failed with error %e", tC.formula, err)
+				}
+			} else {
+				if tC.want != got {
+					t.Errorf("want %f, got %f", tC.want, got)
+				}
 			}
 		})
 	}
