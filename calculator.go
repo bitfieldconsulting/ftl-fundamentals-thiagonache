@@ -65,12 +65,14 @@ func Sqrt(a float64) (float64, error) {
 	return math.Sqrt(a), nil
 }
 
+const regularExpression = `^(\d+)(\.\d+)?(\*|\/|\+|\-)(\d+)(\.\d+)?$`
+
+var regex = regexp.MustCompile(regularExpression)
+
 // CalculateString takes math formula as string and returns the result in float64 format
 func CalculateString(input string) (float64, error) {
 
-	const regularExpression = `^(\d+)(\.\d+)?(\*|\/|\+|\-)(\d+)(\.\d+)?$`
 	noSpace := strings.Replace(input, " ", "", -1)
-	regex := regexp.MustCompile(regularExpression)
 	match, _ := regexp.Match(regularExpression, []byte(noSpace))
 	if match {
 		parsed := regex.Find([]byte(noSpace))
