@@ -41,7 +41,7 @@ func Multiply(a, b float64, extra ...float64) float64 {
 
 // Divide takes two or more numbers and returns the result of dividing the first by the second and subsequent numbers, or an error if division by zero occurs.
 func Divide(a, b float64, extra []float64) (float64, error) {
-	ErrDividebyzero := errors.New("Cannot divide by zero")
+	ErrDivideByZero := errors.New("Cannot divide by zero")
 	if b == 0 {
 		return 0, ErrDividebyzero
 	}
