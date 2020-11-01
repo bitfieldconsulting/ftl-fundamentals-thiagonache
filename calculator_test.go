@@ -7,23 +7,41 @@ import (
 )
 
 func TestAdd(t *testing.T) {
-
-	t.Run("Fixed number addition", func(t *testing.T) {
-		var want float64 = 4
-		got := calculator.Add(2, 2)
-		if want != got {
-			t.Errorf("want %f, got %f", want, got)
-		}
-	})
-
-	t.Run("Sum four numbers", func(t *testing.T) {
-		var want float64 = 40
-		got := calculator.Add(2, 8, 20, 10)
-		if want != got {
-			t.Errorf("want %f, got %f", want, got)
-		}
-	})
-
+	testCases := []struct {
+		name  string
+		want  float64
+		a     float64
+		b     float64
+		extra []float64
+	}{
+		{
+			name: "Add two numbers",
+			want: 4,
+			a:    2,
+			b:    2,
+		},
+		{
+			name:  "Sum four numbers",
+			want:  40,
+			a:     2,
+			b:     8,
+			extra: []float64{20, 10},
+		},
+		{
+			name: "Sum negative numbers",
+			want: -32,
+			a:    -16,
+			b:    -16,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			got := calculator.Add(tC.a, tC.b, tC.extra...)
+			if tC.want != got {
+				t.Errorf("want %f, got %f", tC.want, got)
+			}
+		})
+	}
 }
 
 func TestAddRandom(t *testing.T) {
@@ -193,9 +211,11 @@ func TestDivide(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			got, err := calculator.Divide(tC.a, tC.b, tC.extra)
-			if err != nil && tC.errExpected == false {
-				t.Fatalf("Cannot divide inputs %.2f %.2f %.2f: %s", tC.a, tC.b, tC.extra, err)
+			errReceived := err != nil
+			if tC.errExpected != errReceived {
+				t.Fatalf("Divide(%f, %f, %f): unexpected error status: %v", tC.a, tC.b, tC.extra, errReceived)
 			}
+
 			if tC.want != got {
 				t.Errorf("Want %f, got %f", tC.want, got)
 			}
