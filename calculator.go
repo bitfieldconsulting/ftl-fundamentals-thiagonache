@@ -20,8 +20,8 @@ func Add(a, b float64, extra ...float64) float64 {
 	return total
 }
 
-// Subtract takes two or more numbers and returns the result of subtracting the second and subsequent numbers from the first.
-// from the first.
+// Subtract takes two or more numbers and returns the result of subtracting the
+// second and subsequent numbers from the first.
 func Subtract(a, b float64, extra ...float64) float64 {
 	result := a - b
 	for _, n := range extra {
@@ -30,7 +30,8 @@ func Subtract(a, b float64, extra ...float64) float64 {
 	return result
 }
 
-// Multiply takes two or more numbers and returns the result of multiplying them together.
+// Multiply takes two or more numbers and returns the result of multiplying them
+// together.
 func Multiply(a, b float64, extra ...float64) float64 {
 	result := a * b
 	for _, n := range extra {
