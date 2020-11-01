@@ -45,49 +45,45 @@ func TestSubtract(t *testing.T) {
 	testCases := []struct {
 		name  string
 		want  float64
-		n1    float64
-		n2    float64
+		a     float64
+		b     float64
 		extra []float64
 	}{
 		{
-			name:  "Subtract a > b returns positive",
-			n1:    3,
-			n2:    2,
-			extra: nil,
-			want:  1,
+			name: "Subtract a > b returns positive",
+			a:    3,
+			b:    2,
+			want: 1,
 		},
 		{
-			name:  "Substract a < b returns negative",
-			n1:    3,
-			n2:    5,
-			extra: nil,
-			want:  -2,
+			name: "Substract a < b returns negative",
+			a:    3,
+			b:    5,
+			want: -2,
 		},
 		{
-			name:  "Ensure decimals",
-			n1:    6,
-			n2:    2.225,
-			extra: nil,
-			want:  3.77500,
+			name: "Ensure decimals",
+			a:    6,
+			b:    2.225,
+			want: 3.77500,
 		},
 		{
-			name:  "Substract a and b negatives which returns a positive",
-			n1:    -3,
-			n2:    -5,
-			extra: nil,
-			want:  2,
+			name: "Substract a and b negatives which returns a positive",
+			a:    -3,
+			b:    -5,
+			want: 2,
 		},
 		{
 			name:  "Substract five numbers",
-			n1:    20,
-			n2:    5,
+			a:     20,
+			b:     5,
 			extra: []float64{4, 3, 7},
 			want:  1,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got := calculator.Subtract(tC.n1, tC.n2, tC.extra)
+			got := calculator.Subtract(tC.a, tC.b, tC.extra...)
 			if tC.want != got {
 				t.Errorf("want %f, got %f", tC.want, got)
 			}
@@ -99,56 +95,51 @@ func TestMultiply(t *testing.T) {
 	testCases := []struct {
 		name  string
 		want  float64
-		n1    float64
-		n2    float64
+		a     float64
+		b     float64
 		extra []float64
 	}{
 		{
-			name:  "Multiply two positive numbers returns positive",
-			n1:    3,
-			n2:    2,
-			extra: nil,
-			want:  6,
+			name: "Multiply two positive numbers returns positive",
+			a:    3,
+			b:    2,
+			want: 6,
 		},
 		{
-			name:  "Multiply positive and negative should return negative",
-			n1:    3,
-			n2:    -2,
-			extra: nil,
-			want:  -6,
+			name: "Multiply positive and negative should return negative",
+			a:    3,
+			b:    -2,
+			want: -6,
 		},
 		{
-			name:  "Multiply two negative numbers returns positive",
-			n1:    -3,
-			n2:    -2,
-			extra: nil,
-			want:  6,
+			name: "Multiply two negative numbers returns positive",
+			a:    -3,
+			b:    -2,
+			want: 6,
 		},
 		{
-			name:  "Multiply fractions return fraction",
-			n1:    3.2,
-			n2:    2.501,
-			extra: nil,
-			want:  8.0032,
+			name: "Multiply fractions return fraction",
+			a:    3.2,
+			b:    2.501,
+			want: 8.0032,
 		},
 		{
-			name:  "Multiply by zero return zero",
-			n1:    1943,
-			n2:    0,
-			extra: nil,
-			want:  0,
+			name: "Multiply by zero return zero",
+			a:    1943,
+			b:    0,
+			want: 0,
 		},
 		{
 			name:  "Multiply five numbers",
-			n1:    2,
-			n2:    2,
+			a:     2,
+			b:     2,
 			extra: []float64{5, 3, 2},
 			want:  120,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got := calculator.Multiply(tC.n1, tC.n2, tC.extra)
+			got := calculator.Multiply(tC.a, tC.b, tC.extra...)
 			if tC.want != got {
 				t.Errorf("want %f, got %f", tC.want, got)
 			}
@@ -162,48 +153,48 @@ func TestDivide(t *testing.T) {
 		name        string
 		errExpected bool
 		want        float64
-		n1          float64
-		n2          float64
+		a           float64
+		b           float64
 		extra       []float64
 	}{
 		{
 			name:        "Divide two positive integers",
 			errExpected: false,
 			want:        2,
-			n1:          6,
-			n2:          3,
+			a:           6,
+			b:           3,
 			extra:       nil,
 		},
 		{
 			name:        "Divide by zero",
 			errExpected: true,
 			want:        0,
-			n1:          6,
-			n2:          0,
+			a:           6,
+			b:           0,
 			extra:       nil,
 		},
 		{
 			name:        "Divide two negative integers",
 			errExpected: false,
 			want:        3,
-			n1:          -6,
-			n2:          -2,
+			a:           -6,
+			b:           -2,
 			extra:       nil,
 		},
 		{
 			name:        "Divide five numbers",
 			errExpected: false,
 			want:        1,
-			n1:          60,
-			n2:          2,
+			a:           60,
+			b:           2,
 			extra:       []float64{3, 5, 2},
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got, err := calculator.Divide(tC.n1, tC.n2, tC.extra)
+			got, err := calculator.Divide(tC.a, tC.b, tC.extra)
 			if err != nil && tC.errExpected == false {
-				t.Fatalf("Cannot divide inputs %.2f %.2f %.2f: %s", tC.n1, tC.n2, tC.extra, err)
+				t.Fatalf("Cannot divide inputs %.2f %.2f %.2f: %s", tC.a, tC.b, tC.extra, err)
 			}
 			if tC.want != got {
 				t.Errorf("Want %f, got %f", tC.want, got)
@@ -216,26 +207,26 @@ func TestSqrt(t *testing.T) {
 	testCases := []struct {
 		name        string
 		errExpected bool
-		want, a     float64
+		want, input float64
 	}{
 		{
 			name:        "Calculate square root of a positive number",
 			errExpected: false,
 			want:        7,
-			a:           49,
+			input:       49,
 		},
 		{
 			name:        "Calculate square root of a negative number",
 			errExpected: true,
 			want:        0,
-			a:           -49,
+			input:       -49,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
-			got, err := calculator.Sqrt(tC.a)
+			got, err := calculator.Sqrt(tC.input)
 			if err != nil && tC.errExpected == false {
-				t.Fatalf("Cannot calculate square root of %f: %s", tC.a, err)
+				t.Fatalf("Cannot calculate square root of %f: %s", tC.input, err)
 			}
 			if tC.want != got {
 				t.Errorf("want %f, got %f", tC.want, got)
