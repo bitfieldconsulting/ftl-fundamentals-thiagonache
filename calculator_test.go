@@ -248,7 +248,7 @@ func TestSqrt(t *testing.T) {
 			if err != nil && tC.errExpected == false {
 				t.Fatalf("Cannot calculate square root of %f: %s", tC.input, err)
 			}
-			if tC.want != got {
+			if !tC.errExpected && tC.want != got {
 				t.Errorf("want %f, got %f", tC.want, got)
 			}
 		})
@@ -304,7 +304,7 @@ func TestCalculateString(t *testing.T) {
 			got, err := calculator.CalculateString(tC.formula)
 			if err != nil {
 				if tC.errExpected != true {
-					t.Errorf("Could not evaluate expression %s. It failed with error %e", tC.formula, err)
+					t.Fatalf("Could not evaluate expression %s. It failed with error %e", tC.formula, err)
 				}
 			} else {
 				if tC.want != got {
