@@ -50,7 +50,7 @@ func TestSubtract(t *testing.T) {
 		extra []float64
 	}{
 		{
-			name:  "Substract a > b returns positive",
+			name:  "Subtract a > b returns positive",
 			n1:    3,
 			n2:    2,
 			extra: nil,

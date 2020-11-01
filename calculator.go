@@ -12,18 +12,18 @@ import (
 	"strings"
 )
 
-// Add takes two numbers and returns the result of adding them together.
+// Add takes two or more numbers and returns the result of adding them together.
 func Add(a, b float64, extra ...float64) float64 {
-	var total float64 = a + b
+	total := a + b
 	for _, n := range extra {
 		total += n
 	}
 	return total
 }
 
-// Subtract takes two numbers and returns the result of subtracting the second
+// Subtract takes two or more numbers and returns the result of subtracting the second and subsequent numbers from the first.
 // from the first.
-func Subtract(a, b float64, extra []float64) float64 {
+func Subtract(a, b float64, extra ...float64) float64 {
 	result := a - b
 	for _, n := range extra {
 		result -= n
@@ -31,8 +31,8 @@ func Subtract(a, b float64, extra []float64) float64 {
 	return result
 }
 
-// Multiply takes two numbers and returns the result of multiplication them together.
-func Multiply(a, b float64, extra []float64) float64 {
+// Multiply takes two or more numbers and returns the result of multiplying them together.
+func Multiply(a, b float64, extra ...float64) float64 {
 	result := a * b
 	for _, n := range extra {
 		result *= n
@@ -40,7 +40,7 @@ func Multiply(a, b float64, extra []float64) float64 {
 	return result
 }
 
-// Divide takes two numbers and returns the result of divion and an error message
+// Divide takes two or more numbers and returns the result of dividing the first by the second and subsequent numbers, or an error if division by zero occurs.
 func Divide(a, b float64, extra []float64) (float64, error) {
 	var divideByZeroError = "Cannot divide by zero"
 	if b == 0 {
@@ -56,7 +56,7 @@ func Divide(a, b float64, extra []float64) (float64, error) {
 	return result, nil
 }
 
-// Sqrt takes two numbers and returns the result of divion and an error message
+// Sqrt takes a number and returns its square root, or an error if the number is negative.
 // when receives a negative number
 func Sqrt(a float64) (float64, error) {
 	if a < 0 {
