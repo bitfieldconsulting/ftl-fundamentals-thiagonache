@@ -74,7 +74,7 @@ func TestSubtract(t *testing.T) {
 			want: 1,
 		},
 		{
-			name: "Substract a < b returns negative",
+			name: "Subtract a < b returns negative",
 			a:    3,
 			b:    5,
 			want: -2,
@@ -86,13 +86,13 @@ func TestSubtract(t *testing.T) {
 			want: 3.77500,
 		},
 		{
-			name: "Substract a and b negatives which returns a positive",
+			name: "Subtract a and b negatives which returns a positive",
 			a:    -3,
 			b:    -5,
 			want: 2,
 		},
 		{
-			name:  "Substract five numbers",
+			name:  "Subtract five numbers",
 			a:     20,
 			b:     5,
 			extra: []float64{4, 3, 7},
@@ -165,7 +165,7 @@ func TestMultiply(t *testing.T) {
 	}
 }
 
-// It only consider errExpected variable if an error occours.
+// It only consider errExpected variable if an error occurs.
 func TestDivide(t *testing.T) {
 	testCases := []struct {
 		name        string
@@ -176,12 +176,10 @@ func TestDivide(t *testing.T) {
 		extra       []float64
 	}{
 		{
-			name:        "Divide two positive integers",
-			errExpected: false,
-			want:        2,
-			a:           6,
-			b:           3,
-			extra:       nil,
+			name: "Divide two positive integers",
+			want: 2,
+			a:    6,
+			b:    3,
 		},
 		{
 			name:        "Divide by zero",
@@ -189,23 +187,19 @@ func TestDivide(t *testing.T) {
 			want:        0,
 			a:           6,
 			b:           0,
-			extra:       nil,
 		},
 		{
-			name:        "Divide two negative integers",
-			errExpected: false,
-			want:        3,
-			a:           -6,
-			b:           -2,
-			extra:       nil,
+			name: "Divide two negative integers",
+			want: 3,
+			a:    -6,
+			b:    -2,
 		},
 		{
-			name:        "Divide five numbers",
-			errExpected: false,
-			want:        1,
-			a:           60,
-			b:           2,
-			extra:       []float64{3, 5, 2},
+			name:  "Divide five numbers",
+			want:  1,
+			a:     60,
+			b:     2,
+			extra: []float64{3, 5, 2},
 		},
 	}
 	for _, tC := range testCases {
@@ -230,10 +224,9 @@ func TestSqrt(t *testing.T) {
 		want, input float64
 	}{
 		{
-			name:        "Calculate square root of a positive number",
-			errExpected: false,
-			want:        7,
-			input:       49,
+			name:  "Calculate square root of a positive number",
+			want:  7,
+			input: 49,
 		},
 		{
 			name:        "Calculate square root of a negative number",
@@ -263,34 +256,29 @@ func TestCalculateString(t *testing.T) {
 		formula     string
 	}{
 		{
-			name:        "Multiply no space",
-			errExpected: false,
-			want:        4.0,
-			formula:     "2*2",
+			name:    "Multiply no space",
+			want:    4.0,
+			formula: "2*2",
 		},
 		{
-			name:        "Sum with fraction",
-			errExpected: false,
-			want:        2.5,
-			formula:     "1 + 1.5",
+			name:    "Sum with fraction",
+			want:    2.5,
+			formula: "1 + 1.5",
 		},
 		{
-			name:        "Divide with spaces",
-			errExpected: false,
-			want:        3,
-			formula:     "18   /   6",
+			name:    "Divide with spaces",
+			want:    3,
+			formula: "18   /   6",
 		},
 		{
-			name:        "Substract fraction with no space ",
-			errExpected: false,
-			want:        99.9,
-			formula:     "100-0.1",
+			name:    "Subtract fraction with no space ",
+			want:    99.9,
+			formula: "100-0.1",
 		},
 		{
-			name:        "Substract fraction with no space ",
-			errExpected: false,
-			want:        99.9,
-			formula:     "100-0.1",
+			name:    "Subtract fraction with no space ",
+			want:    99.9,
+			formula: "100-0.1",
 		},
 		{
 			name:        "Invalid expression",
