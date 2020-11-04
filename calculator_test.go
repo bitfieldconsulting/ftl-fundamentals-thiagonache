@@ -2,8 +2,11 @@ package calculator_test
 
 import (
 	"calculator"
+	"math"
 	"math/rand"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestAdd(t *testing.T) {
@@ -165,7 +168,6 @@ func TestMultiply(t *testing.T) {
 	}
 }
 
-// It only consider errExpected variable if an error occurs.
 func TestDivide(t *testing.T) {
 	testCases := []struct {
 		name        string
@@ -225,24 +227,28 @@ func TestSqrt(t *testing.T) {
 	}{
 		{
 			name:  "Calculate square root of a positive number",
-			want:  7,
 			input: 49,
+		},
+		{
+			name:  "Calculate square root of a long positive number",
+			input: 94339,
 		},
 		{
 			name:        "Calculate square root of a negative number",
 			errExpected: true,
-			want:        0,
 			input:       -49,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			got, err := calculator.Sqrt(tC.input)
-			if err != nil && tC.errExpected == false {
-				t.Fatalf("Cannot calculate square root of %f: %s", tC.input, err)
+			errReceived := err != nil
+			if tC.errExpected != errReceived {
+				t.Fatal(err)
 			}
-			if !tC.errExpected && tC.want != got {
-				t.Errorf("want %f, got %f", tC.want, got)
+			want := math.Round(math.Sqrt(tC.input))
+			if !errReceived && !cmp.Equal(want, got) {
+				t.Error(cmp.Diff(want, got))
 			}
 		})
 	}

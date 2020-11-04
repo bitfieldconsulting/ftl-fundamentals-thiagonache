@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go/token"
 	"go/types"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -62,15 +63,18 @@ func Sqrt(a float64) (float64, error) {
 	if a < 0 {
 		return 0, fmt.Errorf("bad input %f:  square root of a negative number is not defined", a)
 	}
-	z := 1.0
-	// First guess
-	z -= (z*z - a) / (2 * z)
+	const precision = 0.0001
+	guess := 1.0
 	// Iterate until change is very small
-	for zNew, delta := z, z; delta > 0.00000001; z = zNew {
-		zNew -= (zNew*zNew - a) / (2 * zNew)
-		delta = z - zNew
+	for {
+		// Newton root algorithm
+		newGuess := guess - (((guess * guess) - a) / (2 * guess))
+		if math.Abs(newGuess-guess) < precision {
+			break
+		}
+		guess = newGuess
 	}
-	return z, nil
+	return math.Round(guess), nil
 }
 
 var validExpression = regexp.MustCompile(`^(\d+)(\.\d+)?(\*|\/|\+|\-)(\d+)(\.\d+)?$`)
