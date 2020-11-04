@@ -65,7 +65,7 @@ func Sqrt(a float64) (float64, error) {
 	}
 	const precision = 0.0001
 	guess := 1.0
-	// Iterate until change is very small
+	// Iterate until difference between newGuess and guess is smaller than precision
 	for {
 		// Newton root algorithm
 		newGuess := guess - (((guess * guess) - a) / (2 * guess))
