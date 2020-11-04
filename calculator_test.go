@@ -244,7 +244,7 @@ func TestSqrt(t *testing.T) {
 			got, err := calculator.Sqrt(tC.input)
 			errReceived := err != nil
 			if tC.errExpected != errReceived {
-				t.Fatal(err)
+				t.Fatalf("Sqrt(%.2f): unexpected error status %v", tc.input, err)
 			}
 			want := math.Round(math.Sqrt(tC.input))
 			if !errReceived && !cmp.Equal(want, got) {
