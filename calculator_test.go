@@ -303,14 +303,12 @@ func TestCalculateString(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			got, err := calculator.CalculateString(tC.formula)
-			if err != nil {
-				if tC.errExpected != true {
-					t.Fatalf("Could not evaluate expression %s. It failed with error %e", tC.formula, err)
-				}
-			} else {
-				if tC.want != got {
-					t.Errorf("want %f, got %f", tC.want, got)
-				}
+			errReceived := err != nil
+			if tC.errExpected != errReceived {
+				t.Fatalf("CaculateString(%s): unexpected error status %v", tC.formula, err)
+			}
+			if !tC.errExpected && tC.want != got {
+				t.Errorf("want %f, got %f", tC.want, got)
 			}
 		})
 	}
