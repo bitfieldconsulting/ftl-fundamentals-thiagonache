@@ -12,6 +12,9 @@ import (
 	"strings"
 )
 
+// Precision is used to calculate when square root is satisfied.
+const Precision = 0.0000000001
+
 // Add takes two or more numbers and returns the result of adding them together.
 func Add(a, b float64, extra ...float64) float64 {
 	total := a + b
@@ -63,18 +66,18 @@ func Sqrt(a float64) (float64, error) {
 	if a < 0 {
 		return 0, fmt.Errorf("bad input %f:  square root of a negative number is not defined", a)
 	}
-	const precision = 0.0001
+
 	guess := 1.0
 	// Iterate until difference between newGuess and guess is smaller than precision
 	for {
 		// Newton root algorithm
 		newGuess := guess - (((guess * guess) - a) / (2 * guess))
-		if math.Abs(newGuess-guess) < precision {
+		if math.Abs(newGuess-guess) < Precision {
 			break
 		}
 		guess = newGuess
 	}
-	return math.Round(guess), nil
+	return guess, nil
 }
 
 var validExpression = regexp.MustCompile(`^(\d+)(\.\d+)?(\*|\/|\+|\-)(\d+)(\.\d+)?$`)

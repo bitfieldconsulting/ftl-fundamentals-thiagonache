@@ -228,10 +228,12 @@ func TestSqrt(t *testing.T) {
 		{
 			name:  "Calculate square root of a positive number",
 			input: 49,
+			want:  7,
 		},
 		{
 			name:  "Calculate square root of a long positive number",
 			input: 94339,
+			want:  307.1465448283604,
 		},
 		{
 			name:        "Calculate square root of a negative number",
@@ -246,9 +248,13 @@ func TestSqrt(t *testing.T) {
 			if tC.errExpected != errReceived {
 				t.Fatal(err)
 			}
-			want := math.Round(math.Sqrt(tC.input))
-			if !errReceived && !cmp.Equal(want, got) {
-				t.Error(cmp.Diff(want, got))
+			opt := cmp.Comparer(func(x, y float64) bool {
+				delta := math.Abs(x - y)
+				mean := math.Abs(x+y) / 2.0
+				return delta/mean < calculator.Precision
+			})
+			if !errReceived && !cmp.Equal(tC.want, got, opt) {
+				t.Error(cmp.Diff(tC.want, got))
 			}
 		})
 	}
