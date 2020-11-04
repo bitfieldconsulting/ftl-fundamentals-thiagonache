@@ -246,7 +246,7 @@ func TestSqrt(t *testing.T) {
 			got, err := calculator.Sqrt(tC.input)
 			errReceived := err != nil
 			if tC.errExpected != errReceived {
-				t.Fatal(err)
+				t.Fatalf("Sqrt(%.2f): unexpected error status %v", tc.input, err)
 			}
 			opt := cmp.Comparer(func(x, y float64) bool {
 				delta := math.Abs(x - y)
