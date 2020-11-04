@@ -94,11 +94,11 @@ func CalculateString(input string) (float64, error) {
 	fs := token.NewFileSet()
 	tr, err := types.Eval(fs, nil, token.NoPos, input)
 	if err != nil {
-		fmt.Printf("Cannot evaluate expression %s: %e", input, err)
+		fmt.Printf("Cannot evaluate expression %s: %v", input, err)
 	}
 	evaluated, err := strconv.ParseFloat(tr.Value.String(), 64)
 	if err != nil {
-		fmt.Printf("Cannot convert %q from string to float64: %e", tr.Value.String(), err)
+		fmt.Printf("Cannot convert %q from string to float64: %v", tr.Value.String(), err)
 	}
 
 	return evaluated, nil
