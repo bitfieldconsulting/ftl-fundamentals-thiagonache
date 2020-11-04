@@ -248,13 +248,7 @@ func TestSqrt(t *testing.T) {
 			if tC.errExpected != errReceived {
 				t.Fatalf("Sqrt(%.2f): unexpected error status %v", tC.input, err)
 			}
-			// Check if difference between two numbers is smaller than precision
-			opt := cmp.Comparer(func(x, y float64) bool {
-				delta := math.Abs(x - y)
-				mean := math.Abs(x+y) / 2.0
-				return delta/mean < calculator.Precision
-			})
-			if !errReceived && !cmp.Equal(tC.want, got, opt) {
+			if math.Abs(tC.want-got) >= calculator.Precision {
 				t.Error(cmp.Diff(tC.want, got))
 			}
 		})
